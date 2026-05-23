@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Bestie 💖</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body{
+      height:100vh;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background: linear-gradient(135deg,#ff758c,#ff7eb3,#ffc3a0);
+      text-align:center;
+      position:relative;
+      color:white;
+    }
+
+    canvas{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .card{
+      position:relative;
+      z-index:2;
+      width:90%;
+      max-width:420px;
+      padding:28px;
+      border-radius:24px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      box-shadow:0 8px 30px rgba(0,0,0,0.2);
+      animation: fadeIn 1.5s ease;
+    }
+
+    .emoji{
+      font-size:4rem;
+      animation: bounce 1.8s infinite;
+    }
+
+    h1{
+      margin-top:10px;
+      font-size:2.3rem;
+      line-height:1.2;
+    }
+
+    .bestie{
+      color:#fff4f8;
+      text-shadow:0 0 10px rgba(255,255,255,0.7);
+    }
+
+    p{
+      margin-top:18px;
+      font-size:1.05rem;
+      line-height:1.7;
+    }
+
+    button{
+      margin-top:22px;
+      padding:13px 24px;
+      border:none;
+      border-radius:40px;
+      background:white;
+      color:#ff4f87;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      transform:scale(1.08);
+      background:#ffe5ee;
+    }
+
+    .footer{
+      margin-top:18px;
+      font-size:0.95rem;
+      opacity:0.9;
+    }
+
+    @keyframes bounce{
+      0%,100%{
+        transform:translateY(0);
+      }
+      50%{
+        transform:translateY(-12px);
+      }
+    }
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(30px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @media(max-width:480px){
+      h1{
+        font-size:1.9rem;
+      }
+
+      p{
+        font-size:0.95rem;
+      }
+
+      .emoji{
+        font-size:3.3rem;
+      }
+
+      .card{
+        padding:22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti"></canvas>
+
+  <!-- Birthday Card -->
+  <div class="card">
+    <div class="emoji">🎂✨</div>
+
+    <h1>
+      Happy Birthday <br>
+      <span class="bestie">Bestie 💖</span>
+    </h1>
+
+    <p>
+      Thank you for being the most amazing friend ever 🫶<br><br>
+      I hope your day is filled with happiness, laughter,
+      love, and lots of cake 🎉🎁
+    </p>
+
+    <button onclick="surprise()">
+      Open Surprise 🎁
+    </button>
+
+    <div class="footer">
+      Forever best friends 💫
+    </div>
+  </div>
+
+  <script>
+    function surprise(){
+      alert("You are my favorite person and I’m lucky to have you as my bestie 💖✨");
+    }
+
+    // CONFETTI EFFECT
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = [];
+
+    for(let i = 0; i < 180; i++){
+      confetti.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 100,
+        color: `hsl(${Math.random()*360},100%,50%)`,
+        tilt: Math.random() * 10 - 10
+      });
+    }
+
+    function drawConfetti(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      confetti.forEach((c)=>{
+        ctx.beginPath();
+        ctx.lineWidth = c.r;
+        ctx.strokeStyle = c.color;
+
+        ctx.moveTo(c.x + c.tilt, c.y);
+        ctx.lineTo(c.x, c.y + c.tilt + c.r);
+        ctx.stroke();
+      });
+
+      updateConfetti();
+    }
+
+    let angle = 0;
+
+    function updateConfetti(){
+      angle += 0.01;
+
+      confetti.forEach((c)=>{
+        c.y += (Math.cos(angle + c.d) + 3 + c.r/2) / 2;
+        c.x += Math.sin(angle);
+
+        if(c.y > canvas.height){
+          c.y = -20;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    setInterval(drawConfetti, 20);
+
+    window.addEventListener("resize", ()=>{
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+
+</body>
+</html>
